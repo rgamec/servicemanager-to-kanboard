@@ -143,10 +143,23 @@ function retrieveTicket(){
 			try {
 				ticketDetails.ticketDescription = tabObject.contentDocument.getElementById(element.ticketDescriptionSelector).value;
 
+				/** Featurefix: Extract ticket description for line items - in request field */
+				var extendedDescription = "";
+				if (ticketDetails.ticketType == ticketTypes.LINE){
+					console.log("[DEBUG] Found a Line item - extracting full request description");
+					var requestDescription = tabObject.contentDocument.getElementsByClassName("dynamicForm")[0].getElementsByTagName("textarea")[0].innerHTML;
+					var interactionDescription = tabObject.contentDocument.getElementById("X63").value;
+					extendedDescription += requestDescription;
+					extendedDescription += interactionDescription;
+					console.log("[DEBUG] Content of extendedDescription variable: " + extendedDescription);
+				}
+
 				/** Bugfix: Description field sometimes marked out by X75 CSS class */
 				if (ticketDetails.ticketDescription === undefined){
 					ticketDetails.ticketDescription = tabObject.contentDocument.getElementById("X75").value;
 				}
+
+				ticketDetails.ticketDescription += extendedDescription;
 				console.log("[DEBUG] ticketDescription was found: " + ticketDetails.ticketDescription);
 			} catch (err){
 				console.log("[DEBUG] ticketDescription was undefined");
