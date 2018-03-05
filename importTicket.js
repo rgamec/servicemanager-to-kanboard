@@ -114,8 +114,16 @@ function importTicket(){
 			ticketCategoryCode = ticketCategoryCodeMappings.SSIS;
 		} else if (ticketDetails.ticketTitle.toLowerCase().includes('dpr')){
 			ticketCategoryCode = ticketCategoryCodeMappings.DPR;
+		} else if (ticketDetails.ticketTitle.toLowerCase().includes('gv')){
+			ticketCategoryCode = ticketCategoryCodeMappings.GV;
 		} else if (ticketDetails.ticketTitle.toLowerCase().includes('scrip')){
 			ticketCategoryCode = ticketCategoryCodeMappings.SCRIP;
+		} else if (ticketDetails.ticketTitle.toLowerCase().includes('citadel')){
+			ticketCategoryCode = ticketCategoryCodeMappings.CITADEL;
+		} else if (ticketDetails.ticketTitle.toLowerCase().includes('TeamCity')){
+			ticketCategoryCode = ticketCategoryCodeMappings.TEAM_CITY;
+		} else if (ticketDetails.ticketTitle.toLowerCase().includes('OctopusDeploy')){
+			ticketCategoryCode = ticketCategoryCodeMappings.OCTOPUS_DEPLOY;
 		} else { 
 			console.log('No recognized keywords found in ticket title for category determination.');
 		}
