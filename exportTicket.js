@@ -82,11 +82,11 @@ function retrieveTicket(){
 							ticketTabTitleSearch: "Interaction",
 							ticketTabTitleOffset: 0,
 							ticketTabTitleLength: 0,
-							ticketIDSelector: "",
-							ticketTitleSelector: "",
-							ticketDescriptionSelector: "",
-							ticketInitiatorSelector: "",
-							ticketPhaseSelector: ""
+							ticketIDSelector: "X4",
+							ticketTitleSelector: "X66",
+							ticketDescriptionSelector: "X69",
+							ticketInitiatorSelector: "X22",
+							ticketPhaseSelector: "X7"
 						}
 					];
 
