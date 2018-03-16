@@ -62,7 +62,7 @@ function retrieveTicket(){
 							ticketTabTitleLength: 12,
 							ticketIDSelector: "X8",
 							ticketTitleSelector: "X57",
-							ticketDescriptionSelector: "X59",
+							ticketDescriptionSelector: "X63",
 							ticketInitiatorSelector: "X38",
 							ticketPhaseSelector: "X26"
 						},
