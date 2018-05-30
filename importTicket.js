@@ -1,6 +1,7 @@
 function importTicket(){
 	/** Check if we're on the correct site */
 	var requiredPageURL = "http://webhostingkanban.emea.cshare.net/?controller=BoardViewController&action=show&project_id=1";
+	var CLS = true;
 	if (window.location.href != requiredPageURL){
 		if(confirm('This script must be run on the Kanboard dashboard. Go there now?')){
 			window.open("http://webhostingkanban.emea.cshare.net/?controller=BoardViewController&action=show&project_id=1"); 
@@ -24,7 +25,13 @@ function importTicket(){
 
 	pasteButton.addEventListener("click", function(){
 		/** Retrieve the new ticket button element, verifying it is correct */
-		var newTaskItemLink = $(".board-swimlane-columns-1 > th:nth-child(1) > div:nth-child(2) > div:nth-child(1) > a:nth-child(1)" ).get(0);
+		/** if CLS flag set to true, create a new ticket in the CLS backlog instead of the BAU backlog */
+		if (CLS){
+			var newTaskItemLink = $(".board-swimlane-columns-7 > th:nth-child(1) > div:nth-child(2) > div:nth-child(1) > a:nth-child(1)" ).get(0);
+		} else {
+			var newTaskItemLink = $(".board-swimlane-columns-1 > th:nth-child(1) > div:nth-child(2) > div:nth-child(1) > a:nth-child(1)" ).get(0);
+		}
+
 		if (newTaskItemLink.title == "Add a new task"){
 			console.log("The 'Add a new task' link element has been found on the page.");
 		} else {
@@ -185,6 +192,3 @@ function importTicket(){
 	document.getElementById("hiddenTicketInput").focus();
 }
 importTicket();
-
-
-
