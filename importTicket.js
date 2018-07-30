@@ -1,7 +1,7 @@
 function importTicket(){
 	/** Check if we're on the correct site */
 	var requiredPageURL = "http://webhostingkanban.emea.cshare.net/?controller=BoardViewController&action=show&project_id=1";
-	var CLS = true;
+	var CLS = false;
 	if (window.location.href != requiredPageURL){
 		if(confirm('This script must be run on the Kanboard dashboard. Go there now?')){
 			window.open("http://webhostingkanban.emea.cshare.net/?controller=BoardViewController&action=show&project_id=1"); 
@@ -54,96 +54,66 @@ function importTicket(){
 
 		var ticketCategoryCodeMappings = {
 			NO_CATEGORY: 0,
-			ACE_ITEM: 56,
-			APP_FABRIC: 55,
-			AXIOM: 61,
-			BUI: 45,
-			CASS: 53,
-			CERTIFICATE_RENEW: 14,
-			CITADEL: 33,
-			CPAY: 46,
-			CPM2: 34,
-			DPR_CASTLE: 20,
-			DPR_LIAB: 21,
-			DPR_OBJECTIVE: 18,
-			DPR_TWIST: 19,
-			DPS_45: 25,
-			DPSNG: 24,
-			EMPLOYEE: 22,
-			EMPLOYEE_MOB: 23,
-			ESB: 54,
-			F5: 58,
-			FINANCE_MANDATE_VALIDATION: 62,
-			GENERAL: 57,
-			GSP: 50,
-			GV: 31,
-			HTRAK: 47,
-			IDENTITY: 41,
-			INSEARCH: 42,
-			INVESTOR: 30,
-			IPO_API: 43,
-			IPO_PAYMENTS: 44,
-			ISCRIP: 27,
-			ISSUER: 26,
-			OCTOPUS_DEPLOY: 36,
-			PDV_SERVICE: 49,
-			RABBITMQ: 35,
-			RIGHTS_ISSUES: 48,
-			ROI: 38,
+			ACCESS: 74,
+			ADMIN: 75,
+			ADMIN_TECHNICAL: 92,
+			ANALYSIS: 76,
+			CONFIG_CHANGE: 77,
+			ECAB_EXCAB: 78,
+			EMAIL: 93,
+			INCIDENT_PROD: 79,
+			INCIDENT_UAT: 80,
+			INFORMATION: 81,
+			MEETING: 91,
+			NEW_SETUP: 82,
+			OOH: 83,
+			PATCH_PROD: 84,
+			PATCH_UAT: 85,
+			PROBLEM_MANAGEMENT: 87,
+			PRODUCT_REFRESH: 89,
 			SCRIP: 9,
-			SQL: 12,
-			SSIS: 51,
-			SSO: 6,
-			SSRS: 52,
-			SUMO: 60,
-			TAX_MANAGER: 32,
-			TEAM_CITY: 37,
-			TFS: 59,
-			UKEIPO: 40,
-			VORKS: 28,
-			VORKS_API: 29,
-			WORLDPAY: 39
+			WALKUP: 90
 		};
 
-		/** Determine a possible category for the item based on its title */
-		var ticketCategoryCode = 0;
+		/** Determine a possible tag for the item based on its title */
+		var ticketTag = "";
 
 		/** to add: citadel, ssis, sso, dpr */
 		if (ticketDetails.ticketTitle.toLowerCase().includes('dpsng')){
-			ticketCategoryCode = ticketCategoryCodeMappings.DPSNG;
+			ticketTag = "DPSNG";
 		} else if (ticketDetails.ticketTitle.toLowerCase().includes('cpm2')){
-			ticketCategoryCode = ticketCategoryCodeMappings.CPM2;
+			ticketTag = "CPM2";
 		} else if (ticketDetails.ticketTitle.toLowerCase().includes('sso')){
-			ticketCategoryCode = ticketCategoryCodeMappings.SSO;
+			ticketTag = "SSO";
 		} else if (ticketDetails.ticketTitle.toLowerCase().includes('ssrs')){
-			ticketCategoryCode = ticketCategoryCodeMappings.SSRS;
+			ticketTag = "SSRS";
 		} else if (ticketDetails.ticketTitle.toLowerCase().includes('ssis')){
-			ticketCategoryCode = ticketCategoryCodeMappings.SSIS;
+			ticketTag = "SSIS";
 		} else if (ticketDetails.ticketTitle.toLowerCase().includes('dpr')){
-			ticketCategoryCode = ticketCategoryCodeMappings.DPR;
+			ticketTag = "DPR";
 		} else if (ticketDetails.ticketTitle.toLowerCase().includes('gv')){
-			ticketCategoryCode = ticketCategoryCodeMappings.GV;
+			ticketTag = "GV";
 		} else if (ticketDetails.ticketTitle.toLowerCase().includes('scrip')){
-			ticketCategoryCode = ticketCategoryCodeMappings.SCRIP;
+			ticketTag = "SCRIP";
 		} else if (ticketDetails.ticketTitle.toLowerCase().includes('citadel')){
-			ticketCategoryCode = ticketCategoryCodeMappings.CITADEL;
+			ticketTag = "Citadel";
 		} else if (ticketDetails.ticketTitle.toLowerCase().includes('TeamCity')){
-			ticketCategoryCode = ticketCategoryCodeMappings.TEAM_CITY;
+			ticketTag = "TeamCity";
 		} else if (ticketDetails.ticketTitle.toLowerCase().includes('OctopusDeploy')){
-			ticketCategoryCode = ticketCategoryCodeMappings.OCTOPUS_DEPLOY;
+			ticketTag = "OctopusDeploy";
 		} else { 
 			console.log('No recognized keywords found in ticket title for category determination.');
 		}
 
 
 		/** Trying to determine if this might be a PROD/UAT deployment */
-		var ticketTag = "";
+		var ticketCategoryCode = 0;
 
 		if (ticketDetails.ticketTitle.toLowerCase().includes('uat')){
-			ticketTag = "Patch UAT";
+			ticketCategoryCode = ticketCategoryCodeMappings.PATCH_UAT;
 			console.log("UAT Patch ticket determined");
 		} else if (ticketDetails.ticketTitle.toLowerCase().includes('prod')){
-			ticketTag = "Patch PROD";
+			ticketCategoryCode = ticketCategoryCodeMappings.PATCH_PROD;
 			console.log("PROD Patch ticket determined");
 		} else {
 			console.log('No recognized keywords found in ticket title for category determination.');
@@ -156,24 +126,16 @@ function importTicket(){
 			document.getElementById('form-category_id').value = ticketCategoryCode;
 
 			if (ticketTag != ""){
-				var tagElement = document.getElementsByClassName("select2-selection__rendered")[0];
-				var LIelement = document.createElement("LI");
-
-				LIelement.title = ticketTag;
-				LIelement.className = "select2-selection__choice";
-
-				var innerSpanElement = document.createElement("span");
-				innerSpanElement.className = "select2-selection__choice__remove";
-				innerSpanElement.role = "presentation";
-				innerSpanElement.innerHTML = "x";
-
-				var innerTextNodeElement = document.createTextNode(ticketTag);
 				
-				LIelement.appendChild(innerSpanElement);
-				LIelement.appendChild(innerTextNodeElement);
+				var tagid = ticketTag;
+				var tagtext = ticketTag;
 
-				/** search element needs to come after the added tag */
-				tagElement.insertBefore(LIelement, tagElement.firstChild);
+				if ($('#form-tags').find("option[value='" + tagid + "']").length) {
+					$('#form-tags').val(tagid).trigger('change');
+				} else { 
+					var newOption = new Option(tagtext, tagid, true, true);
+					$('#form-tags').append(newOption).trigger('change');
+				} 
 
 				/** Now remove the added button and input elements from the Kanboard header */
 				var ticketDataHiddenInputToDelete =  document.getElementById("hiddenTicketInput");
