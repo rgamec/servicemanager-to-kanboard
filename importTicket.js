@@ -1,10 +1,17 @@
 function importTicket(){
-	/** Check if we're on the correct site */
-	var requiredPageURL = "http://webhostingkanban.emea.cshare.net/?controller=BoardViewController&action=show&project_id=1";
+	/** Check if we're on the correct site - only check by URL segment now */
+	/** Now importTicket() can seamlessly support both URL formats */
+	var requiredPageURL = "BoardViewController";
 	var CLS = false;
-	if (window.location.href != requiredPageURL){
+	if (!window.location.href.contains(requiredPageURL)){
 		if(confirm('This script must be run on the Kanboard dashboard. Go there now?')){
-			window.open("http://webhostingkanban.emea.cshare.net/?controller=BoardViewController&action=show&project_id=1"); 
+			if (window.location.href.contains("webhostingkanban")){
+				var URLdomain = window.location.href.split('?')[0];
+			} else {
+				var URLdomain = "http://webhostingkanban/";
+			}
+			var URLtoRedirect = URLdomain + "?controller=BoardViewController&action=show&project_id=1"; 
+			window.open(URLtoRedirect); 
 			console.log("Closing page");
 			return;
 		} 

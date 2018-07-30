@@ -234,7 +234,7 @@ function retrieveTicket(){
 						copyButtonToDelete.parentNode.removeChild(copyButtonToDelete);
 
 						/** Open Kanboard in a new tab/window (browser-specific) */
-						window.open("http://webhostingkanban.emea.cshare.net/?controller=BoardViewController&action=show&project_id=1");
+						window.open("http://webhostingkanban/?controller=BoardViewController&action=show&project_id=1");
 					} catch (err) {
 						console.log('Unable to access the clipboard.');
 					}
