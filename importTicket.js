@@ -3,7 +3,7 @@ function importTicket(){
 	/** Now importTicket() can seamlessly support both URL formats */
 	var requiredPageURL = "BoardViewController";
 	var CLS = false;
-	if (!window.location.href.contains(requiredPageURL)){
+	if (window.location.href.indexOf(requiredPageURL) <= -1){
 		if(confirm('This script must be run on the Kanboard dashboard. Go there now?')){
 			if (window.location.href.contains("webhostingkanban")){
 				var URLdomain = window.location.href.split('?')[0];
